@@ -1,0 +1,37 @@
+import * as React from 'react'
+import Select from "react-select"
+import './Display.scss'
+
+export default function Display() {
+    const [ cardInfoAndImages, setCardInfoAndImages ] = React.useState<string[]>([])
+    const handleChange = (options) => {
+        options.map((option) => {
+            setCardInfoAndImages(() => [
+           ...cardInfoAndImages,
+           option.value,
+          ]);
+        })
+     };
+    return (
+      <div className='editor-container'>
+        <Select name="card_display"
+            isClearable={false}
+            isDisabled={false}
+            isLoading={false}
+            isRtl={false}
+            isSearchable={true}
+            isMulti={false}
+            classNames={{
+                control: () => "rounded-2xl"
+            }}
+            onChange={(e) => {handleChange}
+            }
+            options={cardInfoAndImages.map((card) => ({ value: card, label: card}))} 
+        />
+        <button className='button' onClick={async () => {
+          let card_info = await window.pywebview.api.return_card_info()
+          setCardInfoAndImages(card_info)
+        }}>Get card info</button>
+      </div>
+  )
+}
