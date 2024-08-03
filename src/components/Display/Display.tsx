@@ -30,6 +30,7 @@ export default function Display() {
         />
         <button className='button' onClick={async () => {
           let card_info = await window.pywebview.api.return_card_info()
+          console.log(card_info)
           setCardInfoAndImages(card_info)
         }}>Get card info</button>
       </div>

@@ -58,7 +58,7 @@ class Api:
                         cards.append(card)
                 except:
                     pass
-        return 'card_info_'
+        return card_info_
 
 
 def get_entrypoint():
