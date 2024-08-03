@@ -3,15 +3,25 @@ import Select from "react-select"
 import './Display.scss'
 
 export default function Display() {
-    const [ cardInfoAndImages, setCardInfoAndImages ] = React.useState<string[]>([])
-    const handleChange = (options) => {
-        options.map((option) => {
-            setCardInfoAndImages(() => [
-           ...cardInfoAndImages,
-           option.value,
-          ]);
-        })
-     };
+  const [cardInfoAndImages, setCardInfoAndImages] = React.useState({})
+  const handleChange = (options) => {
+      options.map((option) => {
+          setCardInfoAndImages(() => [
+          ...cardInfoAndImages,
+          option.value,
+        ]);
+      })
+    };
+  <select onChange={setCardInfoAndImages}>
+      <option>Please choose one option</option>
+      {cardInfoAndImages.map((option, index) => {
+          return (
+              <option key={index}>
+                  {option}
+              </option>
+          );
+      })}
+  </select>
     return (
       <div className='editor-container'>
         <Select name="card_display"
@@ -26,7 +36,7 @@ export default function Display() {
             }}
             onChange={(e) => {handleChange}
             }
-            options={cardInfoAndImages.map((card) => ({ value: card, label: card}))} 
+            options={cardInfoAndImages.map((card) => ({ value: card, label: card}))}
         />
         <button className='button' onClick={async () => {
           let card_info = await window.pywebview.api.return_card_info()
