@@ -26,8 +26,9 @@ class Api:
     
 
     def return_card_info(self):
-        f = open('C:/Users/pswan/Downloads/Other/Yu-Gi-Py/src/YGOProDeck_Card_Info.json')
-        f2 = open('C:/Users/pswan/Downloads/Other/Yu-Gi-Py/src/Set_Chronology.json')
+        base_directory = os.getcwd()
+        f = open(f'{base_directory}/YGOProDeck_Card_Info.json')
+        f2 = open(f'{base_directory}/Set_Chronology.json')
         data = json.load(f)
         data2 = json.load(f2)
 
@@ -37,7 +38,6 @@ class Api:
         yugikaiba = date(2002, 3, 29)
 
         cards = []
-        card_info_ = {}
         for card in data2:
             for set in data2[card]:
                 try:
@@ -52,13 +52,29 @@ class Api:
                             level = card_info[card]['level']
                             atk = card_info[card]['atk']
                             defn = card_info[card]['def']
-                            card_info_.update({card: card_info[card]['type'] + '\t' + attribute + '\t' + card_info[card]['race'] + '\t' + str(level) + '\t' + str(atk) + '\t' + str(defn)})
+                            card_info = {"card_type": card_info[card]['type'],
+                                               "card_attribute": attribute,
+                                               "card_race": card_info[card]['race'],
+                                               "card_level": str(level),
+                                        "card_attack": str(atk),
+                                        "card_defense": str(defn),
+                                        "card_image": card_info[card]['card_images'][0]['image_url_cropped']
+                                        }
+                            
+                            cards.append(card_info)
                         except:
-                            card_info_.update({card: card_info[card]['type'] + '\t' + attribute + '\t' + card_info[card]['race'] + '\t' + str(level) + '\t' + str(atk) + '\t' + str(defn)})
-                        cards.append(card)
-                except:
-                    pass
-        return card_info_
+                            card_info = {"card_type": card_info[card]['type'],
+                                               "card_race": card_info[card]['race'],
+                                               "card_level": str(level),
+                                        "card_attack": str(atk),
+                                        "card_defense": str(defn),
+                                        "card_id": card_info[card].get('id', ''),
+                                        "card_image": card_info[card]['card_images'][0]['image_url_cropped']
+                                        }
+                            cards.append(card_info)
+                except Exception as e:
+                    print(e)
+        return cards    
 
 
 def get_entrypoint():

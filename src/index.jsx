@@ -12,7 +12,7 @@ const App = function() {
     <>
       <Header/>
       <Display/>
-      <Editor/>
+      {/* <Editor/> */}
     </>
   )
 }
